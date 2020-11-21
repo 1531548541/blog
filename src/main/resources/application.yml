@@ -8,3 +8,11 @@ spring:
 
 comment.avatar: /images/avatar.png
 
+# pagehelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  page-size-zero: true
+  row-bounds-with-count: true

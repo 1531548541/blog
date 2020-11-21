@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.*;
+
 @SpringBootTest
 class BlogApplicationTests {
 
@@ -82,5 +84,45 @@ class BlogApplicationTests {
         // 6、执行
         mpg.execute();
     }
+
+    @Test
+    public void test(){
+        ListNode node=new ListNode(4);
+        node.next=new ListNode(19);
+        node.next.next=new ListNode(14);
+        node.next.next.next=new ListNode(5);
+        node.next.next.next.next=new ListNode(3);
+        int[] nums={1,1,2,2,2,3};
+        System.out.println(frequencySort(nums));
+    }
+
+    @Test
+    public int[] frequencySort(int[] nums) {
+        int[] ans=new int[nums.length];
+        Map<Integer,Integer> map=new HashMap<>();
+        for (int num : nums) {
+            map.put(num,map.getOrDefault(num,0)+1);
+        }
+        //根究value升序
+        Map<Integer,Integer> valueMap=new LinkedHashMap <>();
+        map.entrySet().stream().sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(b->valueMap.put(b.getKey(),b.getValue()));
+        int index=0;
+        for (Map.Entry<Integer, Integer> entry : valueMap.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                ans[index++]=entry.getKey();
+            }
+        }
+        return ans;
+    }
+
+    class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+     ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+  }
+
 
 }
