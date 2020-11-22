@@ -61,21 +61,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="type,iterStat : ${page.content}">
+          <tr th:each="tag,iterStat : ${tagList}">
             <td th:text="${iterStat.count}">1</td>
-            <td th:text="${type.name}">刻意练习清单</td>
+            <td th:text="${tag.name}">刻意练习清单</td>
             <td>
-              <a href="#" th:href="@{/admin/tags/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
-              <a href="#" th:href="@{/admin/tags/{id}/delete(id=${type.id})}" class="ui mini red basic button">删除</a>
+              <a href="#" th:href="@{/admin/tags/{id}(id=${tag.id})}" class="ui mini teal basic button">编辑</a>
+              <a href="#" th:href="@{/admin/tags/delete/{id}(id=${tag.id})}" class="ui mini red basic button">删除</a>
             </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <th colspan="6" >
-              <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
-                <a th:href="@{/admin/tags(page=${page.number}-1)}" class="  item" th:unless="${page.first}">上一页</a>
-                <a th:href="@{/admin/tags(page=${page.number}+1)}" class=" item" th:unless="${page.last}">下一页</a>
+              <div class="ui mini pagination menu" th:if="${total}>1">
+                <a th:href="@{/admin/tags(page=${page.pageNum}-1)}" class="  item" th:if="${page.hasPreviousPage}">上一页</a>
+                <a th:href="@{/admin/tags(page=${page.pageNum}+1)}" class=" item" th:if="${page.hasNextPage}">下一页</a>
               </div>
               <a href="#" th:href="@{/admin/tags/input}"  class="ui mini right floated teal basic button">新增</a>
             </th>

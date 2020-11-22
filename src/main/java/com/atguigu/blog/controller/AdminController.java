@@ -1,7 +1,9 @@
 package com.atguigu.blog.controller;
 
+import com.atguigu.blog.entity.TTag;
 import com.atguigu.blog.entity.TType;
 import com.atguigu.blog.entity.TUser;
+import com.atguigu.blog.service.TTagService;
 import com.atguigu.blog.service.TTypeService;
 import com.atguigu.blog.service.TUserService;
 import com.atguigu.blog.utils.MD5Utils;
@@ -29,6 +31,9 @@ public class AdminController {
 
     @Autowired
     private TTypeService typeService;
+
+    @Autowired
+    private TTagService tagService;
 
     @GetMapping
     public String toAdminLogin(){
@@ -138,5 +143,86 @@ public class AdminController {
             attributes.addFlashAttribute("message","删除失败");
         }
         return "redirect:/admin/types";
+    }
+
+
+
+
+    @GetMapping("/tags")
+    public String toAdminTags(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                               @RequestParam(value = "pageSize",defaultValue = "5")Integer pageSize,
+                               Model model){
+        //分页
+        PageHelper.startPage(page,pageSize);
+        List<TTag> tagList = tagService.list(null);
+        PageInfo pageInfo = new PageInfo(tagList);
+        model.addAttribute("tagList",tagList);
+        model.addAttribute("page",pageInfo);
+        model.addAttribute("total",pageInfo.getTotal());
+        return "admin/tags";
+    }
+
+    //新增type
+    @PostMapping("/tags")
+    public String addTag(TTag tag, RedirectAttributes attributes){
+        //根据name查找Type
+        QueryWrapper<TTag> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("name",tag.getName());
+        TTag tTag = tagService.getOne(queryWrapper);
+        if(tTag !=null){
+            //存在
+            attributes.addFlashAttribute("message","不能添加重复的标签");
+            return "redirect:/admin/tags/input";
+        }else {
+            //添加
+            tagService.save(tag);
+            attributes.addFlashAttribute("message", "新增成功");
+            return "redirect:/admin/tags";
+        }
+    }
+
+    //查看修改type页面(回显)
+    @GetMapping("/tags/{id}")
+    public String toEditTag(@PathVariable Long id,Model model){
+        model.addAttribute("tag", tagService.getById(id));
+        return "admin/tags-input";
+    }
+
+    //修改type
+    @PostMapping("/tags/update")
+    public String editTag(TTag tage, RedirectAttributes attributes){
+        //根据name查找Type
+        QueryWrapper<TTag> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("name",tage.getName());
+        TTag tTag = tagService.getOne(queryWrapper);
+        if(tTag !=null){
+            //存在
+            attributes.addFlashAttribute("message","该分类已存在");
+            return "redirect:/admin/tags/"+ tTag.getId();
+        }else {
+            //添加
+            tagService.updateById(tage);
+            attributes.addFlashAttribute("message", "修改成功");
+            return "redirect:/admin/tags";
+        }
+    }
+
+    //查看新增type页面
+    @GetMapping("/tags/input")
+    public String toAddTags(Model model){
+        model.addAttribute("tag", new TTag());
+        return "admin/tags-input";
+    }
+
+    //删除type
+    @GetMapping("/tags/delete/{id}")
+    public String deleteTag(@PathVariable Long id,RedirectAttributes attributes){
+        boolean b = tagService.removeById(id);
+        if(b){
+            attributes.addFlashAttribute("message","删除成功");
+        }else {
+            attributes.addFlashAttribute("message","删除失败");
+        }
+        return "redirect:/admin/tags";
     }
 }
