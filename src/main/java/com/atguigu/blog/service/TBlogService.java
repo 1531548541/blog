@@ -1,5 +1,6 @@
 package com.atguigu.blog.service;
 
+import com.atguigu.blog.VO.BlogQuery;
 import com.atguigu.blog.entity.TBlog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,4 +23,8 @@ public interface TBlogService extends IService<TBlog> {
     TBlog getBlogById(Long id);
 
     void updateByBlog(TBlog blog);
+
+    boolean removeBlogById(Long id);
+
+    List<TBlog> searchByParm(BlogQuery blogQuery);
 }

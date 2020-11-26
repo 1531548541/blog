@@ -1,5 +1,6 @@
 package com.atguigu.blog.controller;
 
+import com.atguigu.blog.VO.BlogQuery;
 import com.atguigu.blog.entity.*;
 import com.atguigu.blog.service.*;
 import com.atguigu.blog.utils.MD5Utils;
@@ -95,6 +96,20 @@ public class AdminController {
         return "admin/blogs";
     }
 
+    @PostMapping("/blogs/search")
+    public String search(@RequestParam(value = "pageSize",defaultValue = "5")Integer pageSize,
+                        BlogQuery blogQuery, Model model) {
+        //分页
+        PageHelper.startPage(blogQuery.getPage(),pageSize);
+        List<TBlog> blogList = blogService.searchByParm(blogQuery);
+        PageInfo pageInfo = new PageInfo(blogList);
+        model.addAttribute("blogList",blogList);
+        model.addAttribute("page",pageInfo);
+        model.addAttribute("total",pageInfo.getTotal());
+        return "admin/blogs :: blogList";
+    }
+
+
     //新增blog
     @PostMapping("/blogs")
     public String addBlog(TBlog blog,RedirectAttributes attributes){
@@ -131,7 +146,7 @@ public class AdminController {
     //删除blog
     @GetMapping("/blogs/delete/{id}")
     public String deleteBlog(@PathVariable Long id,RedirectAttributes attributes){
-        boolean b = blogService.removeById(id);
+        boolean b = blogService.removeBlogById(id);
         if(b){
             attributes.addFlashAttribute("message","删除成功");
         }else {

@@ -1,5 +1,6 @@
 package com.atguigu.blog.service.impl;
 
+import com.atguigu.blog.VO.BlogQuery;
 import com.atguigu.blog.entity.TBlog;
 import com.atguigu.blog.entity.TBlogTagMapping;
 import com.atguigu.blog.mapper.TBlogMapper;
@@ -88,5 +89,35 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
         for (String s : blog.getTagIds().split(",")) {
             blogTagMappingMapper.insert(new TBlogTagMapping().setBlogId(blog.getId()).setTagId(Long.valueOf(s)));
         }
+    }
+
+    @Override
+    public boolean removeBlogById(Long id) {
+        //删除blog
+        int i = blogMapper.deleteById(id);
+        //删除blogtagMapping
+        QueryWrapper<TBlogTagMapping> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("blog_id",id);
+        int i1 = blogTagMappingMapper.delete(queryWrapper);
+        if(i==0&&i1==0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<TBlog> searchByParm(BlogQuery blogQuery) {
+        QueryWrapper<TBlog> queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("title",blogQuery.getTitle());
+        if(blogQuery.getTypeId()!=null){
+            queryWrapper.eq("type_id",blogQuery.getTypeId());
+        }
+        queryWrapper.eq("recommend",blogQuery.getRecommend()?1:0);
+        List<TBlog> blogList = blogMapper.selectList(queryWrapper);
+        for (TBlog tBlog : blogList) {
+            //查找type
+            tBlog.setType(typeMapper.selectById(tBlog.getTypeId()));
+        }
+        return blogList;
     }
 }
