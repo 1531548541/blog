@@ -1,11 +1,7 @@
 package com.atguigu.blog.controller;
 
-import com.atguigu.blog.entity.TTag;
-import com.atguigu.blog.entity.TType;
-import com.atguigu.blog.entity.TUser;
-import com.atguigu.blog.service.TTagService;
-import com.atguigu.blog.service.TTypeService;
-import com.atguigu.blog.service.TUserService;
+import com.atguigu.blog.entity.*;
+import com.atguigu.blog.service.*;
 import com.atguigu.blog.utils.MD5Utils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +31,12 @@ public class AdminController {
 
     @Autowired
     private TTagService tagService;
+
+    @Autowired
+    private TBlogService blogService;
+
+    @Autowired
+    private TBlogTagMappingService blogTagMappingService;
 
     @GetMapping
     public String toAdminLogin(){
@@ -63,9 +66,84 @@ public class AdminController {
     }
 
     @GetMapping("/blogs")
-    public String toAdminBlog(){
+    public String toAdminBlog(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                              @RequestParam(value = "pageSize",defaultValue = "5")Integer pageSize,
+                              Model model){
+        //分页
+        PageHelper.startPage(page,pageSize);
+        List<TBlog> blogList = blogService.list(null);
+        for (TBlog tBlog : blogList) {
+            //查找type
+            tBlog.setType(typeService.getById(tBlog.getTypeId()));
+            //查找tagList
+            List<TTag> tagList=new ArrayList<>();
+            QueryWrapper<TBlogTagMapping> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("blog_id",tBlog.getId());
+            List<TBlogTagMapping> blogTagMappingList = blogTagMappingService.list(queryWrapper);
+            for (TBlogTagMapping tBlogTagMapping : blogTagMappingList) {
+                //查找整个tag类
+                TTag tag = tagService.getById(tBlogTagMapping.getTagId());
+                tagList.add(tag);
+            }
+            tBlog.setTagList(tagList);
+        }
+        PageInfo pageInfo = new PageInfo(blogList);
+        model.addAttribute("blogList",blogList);
+        model.addAttribute("typeList",typeService.list(null));
+        model.addAttribute("page",pageInfo);
+        model.addAttribute("total",pageInfo.getTotal());
         return "admin/blogs";
     }
+
+    //新增blog
+    @PostMapping("/blogs")
+    public String addBlog(TBlog blog,RedirectAttributes attributes){
+        if(blog.getId()==null){
+            //添加
+            blogService.saveBlog(blog);
+            attributes.addFlashAttribute("message", "新增成功");
+        }else{
+            //修改
+            blogService.updateByBlog(blog);
+            attributes.addFlashAttribute("message", "修改成功");
+        }
+        return "redirect:/admin/blogs";
+}
+
+    //查看修改blog页面(回显)
+    @GetMapping("/blogs/{id}")
+    public String toEditBlog(@PathVariable Long id,Model model){
+        model.addAttribute("blog", blogService.getBlogById(id));
+        model.addAttribute("typeList", typeService.list(null));
+        model.addAttribute("tagList", tagService.list(null));
+        return "admin/blogs-input";
+    }
+
+    //查看新增blog页面
+    @GetMapping("/blogs/input")
+    public String toAddBlogs(Model model){
+        model.addAttribute("blog", new TBlog());
+        model.addAttribute("typeList", typeService.list(null));
+        model.addAttribute("tagList", tagService.list(null));
+        return "admin/blogs-input";
+    }
+
+    //删除blog
+    @GetMapping("/blogs/delete/{id}")
+    public String deleteBlog(@PathVariable Long id,RedirectAttributes attributes){
+        boolean b = blogService.removeById(id);
+        if(b){
+            attributes.addFlashAttribute("message","删除成功");
+        }else {
+            attributes.addFlashAttribute("message","删除失败");
+        }
+        return "redirect:/admin/blogs";
+    }
+
+
+
+
+
 
     @GetMapping("/types")
     public String toAdminTypes(@RequestParam(value = "page",defaultValue = "1") Integer page,
@@ -162,7 +240,7 @@ public class AdminController {
         return "admin/tags";
     }
 
-    //新增type
+    //新增tag
     @PostMapping("/tags")
     public String addTag(TTag tag, RedirectAttributes attributes){
         //根据name查找Type
@@ -181,14 +259,14 @@ public class AdminController {
         }
     }
 
-    //查看修改type页面(回显)
+    //查看修改tag页面(回显)
     @GetMapping("/tags/{id}")
     public String toEditTag(@PathVariable Long id,Model model){
         model.addAttribute("tag", tagService.getById(id));
         return "admin/tags-input";
     }
 
-    //修改type
+    //修改tag
     @PostMapping("/tags/update")
     public String editTag(TTag tage, RedirectAttributes attributes){
         //根据name查找Type
@@ -207,14 +285,14 @@ public class AdminController {
         }
     }
 
-    //查看新增type页面
+    //查看新增tag页面
     @GetMapping("/tags/input")
     public String toAddTags(Model model){
         model.addAttribute("tag", new TTag());
         return "admin/tags-input";
     }
 
-    //删除type
+    //删除tag
     @GetMapping("/tags/delete/{id}")
     public String deleteTag(@PathVariable Long id,RedirectAttributes attributes){
         boolean b = tagService.removeById(id);

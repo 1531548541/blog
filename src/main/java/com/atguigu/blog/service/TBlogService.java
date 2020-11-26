@@ -3,6 +3,8 @@ package com.atguigu.blog.service;
 import com.atguigu.blog.entity.TBlog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TBlogService extends IService<TBlog> {
 
+    List<TBlog> listAll();
+
+    void saveBlog(TBlog blog);
+
+    TBlog getBlogById(Long id);
+
+    void updateByBlog(TBlog blog);
 }

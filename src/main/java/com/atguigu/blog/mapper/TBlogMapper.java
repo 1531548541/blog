@@ -3,6 +3,8 @@ package com.atguigu.blog.mapper;
 import com.atguigu.blog.entity.TBlog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TBlogMapper extends BaseMapper<TBlog> {
 
+    List<TBlog> selectAll();
 }

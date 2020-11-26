@@ -1,6 +1,6 @@
 package com.atguigu.blog.mapper;
 
-import com.atguigu.blog.entity.TType;
+import com.atguigu.blog.entity.TBlogTagMapping;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,5 +11,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author wujie
  * @since 2020-11-16
  */
-public interface TTypeMapper extends BaseMapper<TType> {
+public interface TBlogTagMappingMapper extends BaseMapper<TBlogTagMapping> {
 }

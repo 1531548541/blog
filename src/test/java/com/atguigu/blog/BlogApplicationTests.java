@@ -92,8 +92,10 @@ class BlogApplicationTests {
         node.next.next=new ListNode(14);
         node.next.next.next=new ListNode(5);
         node.next.next.next.next=new ListNode(3);
-        int[] nums={1,1,2,2,2,3};
-        System.out.println(frequencySort(nums));
+//        int[] nums={1,1,2,2,2,3};
+//        System.out.println(frequencySort(nums));
+        int[][] arr={{4,3,2,-1},{3,2,1,-1},{1,1,-1,-2}};
+        int[] nums = {4,1,4,6};
     }
 
     @Test
@@ -113,6 +115,7 @@ class BlogApplicationTests {
                 ans[index++]=entry.getKey();
             }
         }
+        Set<Integer> set=new HashSet<>();
         return ans;
     }
 

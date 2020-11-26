@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.blog.mapper.TBlogMapper">
+    <resultMap id="blogMap" type="com.atguigu.blog.entity.TBlog">
+        <id column="id" property="id" />
+        <result column="appreciation" property="appreciation" />
+        <result column="commentabled" property="commentabled" />
+        <result column="content" property="content" />
+        <result column="create_time" property="createTime" />
+        <result column="description" property="description" />
+        <result column="first_picture" property="firstPicture" />
+        <result column="flag" property="flag" />
+        <result column="published" property="published" />
+        <result column="recommend" property="recommend" />
+        <result column="share_statement" property="shareStatement" />
+        <result column="title" property="title" />
+        <result column="update_time" property="updateTime" />
+        <result column="views" property="views" />
+        <result column="type_id" property="typeId" />
+        <result column="user_id" property="userId" />
+        <result column="comment_count" property="commentCount" />
+        <association property="type" javaType="com.atguigu.blog.entity.TType" select="com.atguigu.blog.mapper.TTypeMapper.selectById" column="type_id"></association>
+<!--        <collection property="tagList" ofType="com.atguigu.blog.entity.TTag" select="com.atguigu.blog.mapper.TTagMapper.selectById" column="tag_id"></collection>-->
+    </resultMap>
 
+    <select id="selectAll" resultMap="blogMap">
+        SELECT b.*,t.* FROM t_blog as b
+        LEFT JOIN t_type t on b.type_id=t.id
+    </select>
 </mapper>
