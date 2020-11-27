@@ -1,7 +1,10 @@
 package com.atguigu.blog.mapper;
 
+import com.atguigu.blog.VO.TagVO;
 import com.atguigu.blog.entity.TTag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TTagMapper extends BaseMapper<TTag> {
 
+    List<TagVO> selectSomeAndCount(Integer count);
 }

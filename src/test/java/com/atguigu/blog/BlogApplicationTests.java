@@ -95,7 +95,24 @@ class BlogApplicationTests {
 //        int[] nums={1,1,2,2,2,3};
 //        System.out.println(frequencySort(nums));
         int[][] arr={{4,3,2,-1},{3,2,1,-1},{1,1,-1,-2}};
-        int[] nums = {4,1,4,6};
+        int[] nums = {3,3,1,2,2,-1};
+        System.out.println(findLucky(nums));
+    }
+
+    @Test
+    public int findLucky(int[] arr) {
+        int ans=-1;
+        Map<Integer,Integer> map=new HashMap<>();
+        for (int i : arr) {
+            map.put(i,map.getOrDefault(i,0)+1);
+        }
+        //选出幸运数
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if(entry.getKey()==entry.getValue()){
+                ans=entry.getKey();
+            }
+        }
+        return ans;
     }
 
     @Test

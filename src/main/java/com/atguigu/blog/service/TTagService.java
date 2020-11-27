@@ -1,7 +1,10 @@
 package com.atguigu.blog.service;
 
+import com.atguigu.blog.VO.TagVO;
 import com.atguigu.blog.entity.TTag;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TTagService extends IService<TTag> {
 
+    List<TagVO> listSomeAndCount(Integer countNum);
 }

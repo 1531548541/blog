@@ -1,7 +1,10 @@
 package com.atguigu.blog.mapper;
 
+import com.atguigu.blog.VO.TypeVO;
 import com.atguigu.blog.entity.TType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +15,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-11-16
  */
 public interface TTypeMapper extends BaseMapper<TType> {
+
+    List<TypeVO> selectSomeAndCount(Integer count);
 }

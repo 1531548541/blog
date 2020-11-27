@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.blog.mapper.TTagMapper">
+
+    <select id="selectSomeAndCount" resultType="com.atguigu.blog.VO.TagVO" parameterType="int">
+        SELECT t.*,count(m.tag_id) as countNum FROM t_tag as t
+        LEFT JOIN t_blog_tag_mapping as m ON t.id=m.tag_id
+        GROUP BY t.id
+        ORDER BY countNum desc
+        LIMIT #{count}
+    </select>
+</mapper>

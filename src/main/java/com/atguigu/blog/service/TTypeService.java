@@ -1,7 +1,10 @@
 package com.atguigu.blog.service;
 
+import com.atguigu.blog.VO.TypeVO;
 import com.atguigu.blog.entity.TType;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TTypeService extends IService<TType> {
 
+    List<TypeVO> listSomeAndCount(Integer countNum);
 }

@@ -3,9 +3,11 @@ package com.atguigu.blog.service.impl;
 import com.atguigu.blog.VO.BlogQuery;
 import com.atguigu.blog.entity.TBlog;
 import com.atguigu.blog.entity.TBlogTagMapping;
+import com.atguigu.blog.entity.TTag;
 import com.atguigu.blog.mapper.TBlogMapper;
 import com.atguigu.blog.mapper.TBlogTagMappingMapper;
 import com.atguigu.blog.mapper.TTypeMapper;
+import com.atguigu.blog.mapper.TUserMapper;
 import com.atguigu.blog.service.TBlogService;
 import com.atguigu.blog.service.TTagService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,9 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
     private TBlogMapper blogMapper;
 
     @Autowired
+    private TUserMapper userMapper;
+
+    @Autowired
     private TTypeMapper typeMapper;
 
     @Autowired
@@ -43,7 +49,26 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
 
     @Override
     public List<TBlog> listAll() {
-        return blogMapper.selectAll();
+//        blogMapper.selectAll();
+        List<TBlog> blogList = blogMapper.selectList(null);
+        for (TBlog tBlog : blogList) {
+            //查找user
+            tBlog.setUser(userMapper.selectById(tBlog.getUserId()));
+            //查找type
+            tBlog.setType(typeMapper.selectById(tBlog.getTypeId()));
+            //查找tagList
+            List<TTag> tagList=new ArrayList<>();
+            QueryWrapper<TBlogTagMapping> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("blog_id",tBlog.getId());
+            List<TBlogTagMapping> blogTagMappingList = blogTagMappingMapper.selectList(queryWrapper);
+            for (TBlogTagMapping tBlogTagMapping : blogTagMappingList) {
+                //查找整个tag类
+                TTag tag = tagService.getById(tBlogTagMapping.getTagId());
+                tagList.add(tag);
+            }
+            tBlog.setTagList(tagList);
+        }
+        return blogList;
     }
 
     @Override

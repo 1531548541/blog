@@ -16,3 +16,8 @@ pagehelper:
   params: count=countSql
   page-size-zero: true
   row-bounds-with-count: true
+
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.atguigu.blog.entity

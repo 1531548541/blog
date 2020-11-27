@@ -68,6 +68,9 @@ public class TBlog implements Serializable {
     private TType type;
 
     @TableField(exist = false)
+    private TUser user;
+
+    @TableField(exist = false)
     private String tagIds;
 
 }

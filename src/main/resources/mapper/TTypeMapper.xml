@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.blog.mapper.TTypeMapper">
+
+    <!--    <select id="selectById" parameterType="Integer" resultType="com.atguigu.blog.entity.TType">-->
+    <!--        select * from t_type where id=#{id}-->
+    <!--    </select>-->
+
+    <select id="selectSomeAndCount" resultType="com.atguigu.blog.VO.TypeVO" parameterType="int">
+        SELECT t.*,count(b.id) as countNum FROM t_type as t
+        LEFT JOIN t_blog as b ON t.id=b.type_id
+        GROUP BY t.id
+        ORDER BY countNum desc
+        limit #{count}
+    </select>
+</mapper>

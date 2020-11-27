@@ -72,22 +72,7 @@ public class AdminController {
                               Model model){
         //分页
         PageHelper.startPage(page,pageSize);
-        List<TBlog> blogList = blogService.list(null);
-        for (TBlog tBlog : blogList) {
-            //查找type
-            tBlog.setType(typeService.getById(tBlog.getTypeId()));
-            //查找tagList
-            List<TTag> tagList=new ArrayList<>();
-            QueryWrapper<TBlogTagMapping> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("blog_id",tBlog.getId());
-            List<TBlogTagMapping> blogTagMappingList = blogTagMappingService.list(queryWrapper);
-            for (TBlogTagMapping tBlogTagMapping : blogTagMappingList) {
-                //查找整个tag类
-                TTag tag = tagService.getById(tBlogTagMapping.getTagId());
-                tagList.add(tag);
-            }
-            tBlog.setTagList(tagList);
-        }
+        List<TBlog> blogList = blogService.listAll();
         PageInfo pageInfo = new PageInfo(blogList);
         model.addAttribute("blogList",blogList);
         model.addAttribute("typeList",typeService.list(null));
@@ -112,7 +97,11 @@ public class AdminController {
 
     //新增blog
     @PostMapping("/blogs")
-    public String addBlog(TBlog blog,RedirectAttributes attributes){
+    public String addBlog(TBlog blog,HttpSession session,RedirectAttributes attributes){
+        TUser user = (TUser) session.getAttribute("user");
+        if(user!=null){
+            blog.setUserId(user.getId());
+        }
         if(blog.getId()==null){
             //添加
             blogService.saveBlog(blog);
