@@ -49,6 +49,7 @@ public class TBlogController {
         //查找六条记录
         model.addAttribute("typeList", typeService.listSomeAndCount(6));
         model.addAttribute("tagList", tagService.listSomeAndCount(10));
+        model.addAttribute("recommendBlogs", blogService.listSomeRecommend(6));
         model.addAttribute("page",pageInfo);
         return "index";
     }

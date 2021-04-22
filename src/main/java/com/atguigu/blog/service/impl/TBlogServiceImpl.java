@@ -66,7 +66,7 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
                 TTag tag = tagService.getById(tBlogTagMapping.getTagId());
                 tagList.add(tag);
             }
-            tBlog.setTagList(tagList);
+            tBlog.setTags(tagList);
         }
         return blogList;
     }
@@ -144,5 +144,10 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
             tBlog.setType(typeMapper.selectById(tBlog.getTypeId()));
         }
         return blogList;
+    }
+
+    @Override
+    public List<TBlog> listSomeRecommend(int num) {
+        return blogMapper.selectSomeRecommend(num);
     }
 }

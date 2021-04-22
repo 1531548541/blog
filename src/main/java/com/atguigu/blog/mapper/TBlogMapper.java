@@ -16,4 +16,6 @@ import java.util.List;
 public interface TBlogMapper extends BaseMapper<TBlog> {
 
     List<TBlog> selectAll();
+
+    List<TBlog> selectSomeRecommend(int num);
 }

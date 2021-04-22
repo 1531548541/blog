@@ -62,7 +62,7 @@ public class TBlog implements Serializable {
     private Integer commentCount;
 
     @TableField(exist = false)
-    private List<TTag> tagList;
+    private List<TTag> tags;
 
     @TableField(exist = false)
     private TType type;

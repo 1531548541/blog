@@ -27,4 +27,6 @@ public interface TBlogService extends IService<TBlog> {
     boolean removeBlogById(Long id);
 
     List<TBlog> searchByParm(BlogQuery blogQuery);
+
+    List<TBlog> listSomeRecommend(int num);
 }

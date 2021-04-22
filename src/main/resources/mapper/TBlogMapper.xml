@@ -27,4 +27,11 @@
         SELECT b.*,t.* FROM t_blog as b
         LEFT JOIN t_type t on b.type_id=t.id
     </select>
+
+    <select id="selectSomeRecommend" resultType="com.atguigu.blog.entity.TBlog" parameterType="int">
+        SELECT * FROM t_blog
+        WHERE recommend=1
+        ORDER BY create_time desc
+        LIMIT #{num}
+    </select>
 </mapper>
