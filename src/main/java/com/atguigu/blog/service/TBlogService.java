@@ -3,6 +3,7 @@ package com.atguigu.blog.service;
 import com.atguigu.blog.VO.BlogQuery;
 import com.atguigu.blog.entity.TBlog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface TBlogService extends IService<TBlog> {
     List<TBlog> searchByParm(BlogQuery blogQuery);
 
     List<TBlog> listSomeRecommend(int num);
+
+    TBlog getAndConvert(Long id) throws NotFoundException;
 }

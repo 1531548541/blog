@@ -10,8 +10,11 @@ import com.atguigu.blog.mapper.TTypeMapper;
 import com.atguigu.blog.mapper.TUserMapper;
 import com.atguigu.blog.service.TBlogService;
 import com.atguigu.blog.service.TTagService;
+import com.atguigu.blog.utils.MarkdownUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,5 +152,16 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
     @Override
     public List<TBlog> listSomeRecommend(int num) {
         return blogMapper.selectSomeRecommend(num);
+    }
+
+    @Override
+    public TBlog getAndConvert(Long id) throws NotFoundException {
+        TBlog blog = blogMapper.selectById(id);
+        if (blog == null) {
+            throw new NotFoundException("该博客不存在");
+        }
+        blog.setContent(MarkdownUtils.markdownToHtmlExtensions(blog.getContent()));
+        blog.setUser(userMapper.selectById(blog.getUserId()));
+        return blog;
     }
 }
