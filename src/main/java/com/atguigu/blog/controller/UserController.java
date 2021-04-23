@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 public class UserController {
@@ -66,6 +67,9 @@ public class UserController {
         } else {
             //添加
             user.setType(1);
+            user.setPassword(MD5Utils.code(user.getPassword()));
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
             userService.save(user);
             return "redirect:/login";
         }

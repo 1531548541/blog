@@ -34,7 +34,7 @@ public interface TBlogService extends IService<TBlog> {
 
     TBlog getAndConvert(Long id) throws NotFoundException;
 
-    Map<String,List<TBlog>> archiveBlog();
+    Map<String,List<TBlog>> archiveBlog(Long userId);
 
-    Integer countBlog();
+    Integer countBlog(Long userId);
 }

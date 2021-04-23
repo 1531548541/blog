@@ -35,11 +35,11 @@
         LIMIT #{num}
     </select>
 
-    <select id="selectDiffentYears" resultType="string">
-        select DATE_FORMAT(update_time,'%Y') as year FROM t_blog GROUP BY year order by year DESC
+    <select id="selectDiffentYears" resultType="string" parameterType="long">
+        select DATE_FORMAT(update_time,'%Y') as year FROM t_blog where user_id=#{userId} GROUP BY year order by year DESC
     </select>
 
-    <select id="selectAllByYear" resultType="com.atguigu.blog.entity.TBlog" parameterType="string">
-        select * FROM t_blog where DATE_FORMAT(update_time,'%Y')=#{year}
+    <select id="selectAllByYearAndUId" resultType="com.atguigu.blog.entity.TBlog">
+        select * FROM t_blog where DATE_FORMAT(update_time,'%Y')=#{year} and user_id=#{userId}
     </select>
 </mapper>

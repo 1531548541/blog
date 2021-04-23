@@ -164,19 +164,19 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
     }
 
     @Override
-    public Map<String, List<TBlog>> archiveBlog() {
+    public Map<String, List<TBlog>> archiveBlog(Long userId) {
         Map<String, List<TBlog>> map=new HashMap<>();
         //先获取所有不同的years
-        List<String> years= blogMapper.selectDiffentYears();
+        List<String> years= blogMapper.selectDiffentYears(userId);
         for (String year : years) {
-            map.put(year,blogMapper.selectAllByYear(year));
+            map.put(year,blogMapper.selectAllByYearAndUId(year,userId));
         }
         return map;
     }
 
     @Override
-    public Integer countBlog() {
-        List<TBlog> blogs = blogMapper.selectList(null);
+    public Integer countBlog(Long userId) {
+        List<TBlog> blogs = blogMapper.selectList(new QueryWrapper<TBlog>().eq("user_id",userId));
         return blogs.size();
     }
 }
