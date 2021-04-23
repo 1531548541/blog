@@ -29,4 +29,13 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
         queryWrapper.eq("password",password);
         return userMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public TUser checkAdminUser(String username, String password) {
+        QueryWrapper<TUser> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        queryWrapper.eq("password",password);
+        queryWrapper.eq("type",0);
+        return userMapper.selectOne(queryWrapper);
+    }
 }

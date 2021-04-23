@@ -16,4 +16,6 @@ public interface TUserService extends IService<TUser> {
      * 检查用户名密码
      */
     public TUser checkUser(String username,String password);
+
+    TUser checkAdminUser(String username, String code);
 }

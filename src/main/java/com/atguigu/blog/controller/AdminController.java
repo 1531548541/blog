@@ -49,7 +49,7 @@ public class AdminController {
                         @RequestParam String password,
                         HttpSession session,
                         RedirectAttributes redirectAttributes){
-        TUser user = userService.checkUser(username, MD5Utils.code(password));
+        TUser user = userService.checkAdminUser(username, MD5Utils.code(password));
         if(user!=null){
             user.setPassword(null);
             session.setAttribute("user",user);

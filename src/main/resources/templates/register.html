@@ -1,0 +1,93 @@
+<!--
+	Author: W3layouts
+	Author URL: http://w3layouts.com
+-->
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<!-- Head -->
+<head>
+
+    <title>注册</title>
+
+    <!-- Meta-Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- style CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" media="all">
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css" media="all">
+
+    <!-- google fonts -->
+    <link href="//fonts.googleapis.com/css?family=Mukta:300,400,500" rel="stylesheet">
+
+</head>
+<!-- //Head -->
+
+<!-- Body -->
+<body>
+
+    <section class="main">
+
+        <div class="bottom-grid">
+            <div class="logo">
+                <h1> <a href="index.html">博客</a></h1>
+            </div>
+        </div>
+        <div class="content-w3ls">
+            <div class="text-center icon">
+                <span class="fa fa-meetup"></span>
+            </div>
+
+            <div class="content-bottom">
+                <form th:action="@{/register}" method="post">
+                    <P th:text="${message}" style="color: red"></P>
+                    <div class="field-group">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="username" id="text1" type="text" value="" placeholder="用户名" required>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="password" id="myInput" type="password" placeholder="密码" required>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="nickname"  type="text" placeholder="昵称" required>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="email"  type="email" placeholder="邮箱" required>
+                        </div>
+                    </div>
+                    <div class="wthree-field">
+                        <button type="submit" class="btn">注册</button>
+                    </div>
+                    <ul class="list-login-bottom">
+                        <li class="">
+                            <a href="#url" class="">已经有账号？</a>
+                            <a th:href="@{/login}" class="text-right">登录</a>
+                        </li>
+                        <li class="clearfix"></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2020 Meetup signin form. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a> </p>
+        </div>
+    </section>
+
+</body>
+<!-- //Body -->
+
+</html>
