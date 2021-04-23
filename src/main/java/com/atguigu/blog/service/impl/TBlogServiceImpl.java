@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -163,5 +161,22 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
         blog.setContent(MarkdownUtils.markdownToHtmlExtensions(blog.getContent()));
         blog.setUser(userMapper.selectById(blog.getUserId()));
         return blog;
+    }
+
+    @Override
+    public Map<String, List<TBlog>> archiveBlog() {
+        Map<String, List<TBlog>> map=new HashMap<>();
+        //先获取所有不同的years
+        List<String> years= blogMapper.selectDiffentYears();
+        for (String year : years) {
+            map.put(year,blogMapper.selectAllByYear(year));
+        }
+        return map;
+    }
+
+    @Override
+    public Integer countBlog() {
+        List<TBlog> blogs = blogMapper.selectList(null);
+        return blogs.size();
     }
 }

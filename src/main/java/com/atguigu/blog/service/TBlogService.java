@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,4 +33,8 @@ public interface TBlogService extends IService<TBlog> {
     List<TBlog> listSomeRecommend(int num);
 
     TBlog getAndConvert(Long id) throws NotFoundException;
+
+    Map<String,List<TBlog>> archiveBlog();
+
+    Integer countBlog();
 }

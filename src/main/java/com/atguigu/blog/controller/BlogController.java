@@ -26,7 +26,7 @@ import java.util.List;
  * @since 2020-11-16
  */
 @Controller
-public class TBlogController {
+public class BlogController {
 
     @Autowired
     private TBlogService blogService;

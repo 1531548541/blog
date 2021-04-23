@@ -27,7 +27,7 @@ import java.util.List;
  * @since 2020-11-16
  */
 @Controller
-public class TTypeController {
+public class TypeController {
 
     @Autowired
     private TTypeService typeService;

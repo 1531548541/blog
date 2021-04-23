@@ -18,4 +18,8 @@ public interface TBlogMapper extends BaseMapper<TBlog> {
     List<TBlog> selectAll();
 
     List<TBlog> selectSomeRecommend(int num);
+
+    List<String> selectDiffentYears();
+
+    List<TBlog> selectAllByYear(String year);
 }
