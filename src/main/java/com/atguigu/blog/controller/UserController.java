@@ -91,6 +91,7 @@ public class UserController {
     @PostMapping("/myInfo")
     public String updateMyInfo(TUser user, HttpSession session, RedirectAttributes attributes) {
         //修改
+        user.setUpdateTime(new Date());
         userService.updateById(user);
         attributes.addFlashAttribute("message", "修改成功");
         //更新session
