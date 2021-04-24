@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
   <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
   <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
-
   <link rel="stylesheet" th:href="@{/css/style-desktop.css}" />
-
+  <link rel="stylesheet"  th:href="@{/lib/editormd/css/editormd.min.css}">
+  <link rel="stylesheet"  th:href="@{/css/me.css}">
 </head>
 <body>
 
@@ -49,7 +49,8 @@
           <li th:classappend="${n==2} ? 'active'"><a th:href="@{/types/-1}">分类</a></li>
           <li th:classappend="${n==3} ? 'active'"><a th:href="@{/tags/-1}">标签</a></li>
           <li th:classappend="${n==4} ? 'active'"><a th:href="@{/archives}">归档</a></li>
-          <li th:classappend="${n==5} ? 'active'"th:if="${session.user==null}"><a th:href="@{/login}">登录/注册</a></li>
+          <li th:classappend="${n==5} ? 'active'"><a th:href="@{/blog/input}">写博客</a></li>
+          <li th:classappend="${n==6} ? 'active'"th:if="${session.user==null}"><a th:href="@{/login}">登录/注册</a></li>
           <li><a th:href="@{/admin}">后台登录</a></li>
         </ul>
       </nav>
@@ -75,6 +76,7 @@
   <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
   <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
   <script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+  <script th:src="@{/lib/editormd/editormd.min.js}"></script>
   <script>
     $('.menu.toggle').click(function () {
       $('.m-item').toggleClass('m-mobile-hide');
