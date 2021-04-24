@@ -1,13 +1,16 @@
 package com.atguigu.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -27,13 +30,9 @@ public class TComment implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String nickname;
-
-    private String email;
+    private String username;
 
     private String content;
-
-    private String avatar;
 
     private Date createTime;
 
@@ -43,5 +42,17 @@ public class TComment implements Serializable {
 
     private Boolean adminComment;
 
+    private Long foreparentId;
 
+    @TableField(exist = false)
+    private TBlog blog;
+
+    @TableField(exist = false)
+    private TUser user;
+
+    @TableField(exist = false)
+    private List<TComment> replyComments = new ArrayList<>();
+
+    @TableField(exist = false)
+    private TComment parentComment;
 }
