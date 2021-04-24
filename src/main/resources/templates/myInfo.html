@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息</title>
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(0)">
+</nav>
+
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+        <form class="ui form" id="user-form" th:object="${user}" th:action="@{/myInfo}" method="post">
+          <input type="hidden" name="id" th:value="*{id}">
+            <h4 class="ui dividing header">个人信息</h4>
+            <div class="required field">
+                <label>用户名</label>
+                <div class="field">
+                    <input type="text" name="username" placeholder="用户名" th:value="*{username}" readonly>
+                </div>
+            </div>
+          <div class="field">
+            <label>昵称</label>
+            <div class="field">
+              <input type="text" name="nickname" placeholder="昵称" th:value="*{nickname}">
+            </div>
+          </div>
+            <div class="field">
+                <label>邮箱</label>
+                <div class="field">
+                    <input type="email" name="email" placeholder="邮箱" th:value="*{email}">
+                </div>
+            </div>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test1">上传头像</button>
+                <div class="layui-upload-list">
+                    <input type="text" th:value="*{avatar}" name="avatar" class="hpic" hidden/>
+                    <img class="layui-upload-img" id="demo1" th:src="*{avatar}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+          <div class="ui submit button" id="save-btn">提交</div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    $('#save-btn').click(function () {
+        $('[name="published"]').val(false);
+        $('#user-form').submit();
+    });
+
+
+    $('.ui.form').form({
+        fields: {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '标题：请输入用户名'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'empty',
+                    prompt: '标题：请输入密码'
+                }]
+            },
+            email: {
+                identifier: 'email',
+                rules: [{
+                    type: 'empty',
+                    prompt: '标题：请输入性别'
+                }]
+            },
+            avatar: {
+                identifier: 'avatar',
+                rules: [{
+                    type: 'empty',
+                    prompt: '标题：请选择用户类型'
+                }]
+            }
+        }
+    });
+    layui.use('upload', function() {
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: '/uploadFile' //改成您自己的上传接口
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                layer.msg('上传成功');
+                $(".hpic").val(res.data.src);
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    })
+</script>
+</body>
+</html>

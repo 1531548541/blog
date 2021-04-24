@@ -94,9 +94,9 @@ public class UserController {
         userService.updateById(user);
         attributes.addFlashAttribute("message", "修改成功");
         //更新session
-//        TUser tUser = userService.getById(user.getId());
-//        tUser.setPassword(null);
-//        session.setAttribute("user", tUser);
+        TUser tUser = userService.getById(user.getId());
+        tUser.setPassword(null);
+        session.setAttribute("user", tUser);
         return "redirect:/index";
     }
 }
