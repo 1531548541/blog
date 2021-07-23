@@ -4,6 +4,7 @@ import com.atguigu.blog.entity.TComment;
 import com.atguigu.blog.entity.TUser;
 import com.atguigu.blog.service.TBlogService;
 import com.atguigu.blog.service.TCommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -52,6 +54,16 @@ public class CommentController {
         }
     }
 
-
+    //删除评论
+    @PostMapping("/comment/delete")
+    @ResponseBody
+    public String deleteComment(String id) {
+        if (StringUtils.isBlank(id)) {
+            return "删除失败";
+        }else {
+            commentService.removeById(Long.parseLong(id));
+            return "删除成功";
+        }
+    }
 
 }

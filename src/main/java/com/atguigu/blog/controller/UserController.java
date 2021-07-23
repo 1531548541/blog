@@ -1,6 +1,7 @@
 package com.atguigu.blog.controller;
 
 
+import com.atguigu.blog.constant.ConstantProperties;
 import com.atguigu.blog.entity.TUser;
 import com.atguigu.blog.service.TUserService;
 import com.atguigu.blog.utils.MD5Utils;
@@ -80,7 +81,9 @@ public class UserController {
     public String myInfo(HttpSession session, Model model) {
         TUser user = (TUser) session.getAttribute("user");
         if (user != null) {
-            model.addAttribute("user", userService.getById(user.getId()));
+            TUser tUser = userService.getById(user.getId());
+            tUser.setAvatar(ConstantProperties.FILE_URL+tUser.getAvatar());
+            model.addAttribute("user", tUser);
             return "myInfo";
         } else {
             return "login";

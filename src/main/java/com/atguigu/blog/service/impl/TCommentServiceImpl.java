@@ -1,5 +1,6 @@
 package com.atguigu.blog.service.impl;
 
+import com.atguigu.blog.constant.ConstantProperties;
 import com.atguigu.blog.entity.TComment;
 import com.atguigu.blog.entity.TUser;
 import com.atguigu.blog.mapper.TCommentMapper;
@@ -60,10 +61,14 @@ public class TCommentServiceImpl extends ServiceImpl<TCommentMapper, TComment> i
             List<TComment> childs = commentMapper.selectList(new QueryWrapper<TComment>().eq("foreparent_id", comment.getId()));
             for (TComment child : childs) {
                 child.setParentComment(commentMapper.selectById(child.getParentCommentId()));
-                child.setUser(userMapper.selectOne(new QueryWrapper<TUser>().eq("username",child.getUsername())));
+                TUser tUser = userMapper.selectOne(new QueryWrapper<TUser>().eq("username", child.getUsername()));
+                tUser.setAvatar(ConstantProperties.FILE_URL+tUser.getAvatar());
+                child.setUser(tUser);
             }
             comment.setReplyComments(childs);
-            comment.setUser(userMapper.selectOne(new QueryWrapper<TUser>().eq("username",comment.getUsername())));
+            TUser tUser = userMapper.selectOne(new QueryWrapper<TUser>().eq("username", comment.getUsername()));
+            tUser.setAvatar(ConstantProperties.FILE_URL+tUser.getAvatar());
+            comment.setUser(tUser);
         }
         return comments;
     }

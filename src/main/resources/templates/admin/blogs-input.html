@@ -83,7 +83,7 @@
           <button type="button" class="layui-btn" id="test1">上传首图</button>
           <div class="layui-upload-list">
             <input type="text" th:value="*{firstPicture}" name="firstPicture" class="hpic" hidden/>
-            <img class="layui-upload-img" id="demo1" th:src="*{firstPicture}">
+            <img class="layui-upload-img" id="demo1" th:src="'http://travel-2021.oss-cn-beijing.aliyuncs.com/'+*{firstPicture}">
             <p id="demoText"></p>
           </div>
         </div>
@@ -236,7 +236,7 @@
       //普通图片上传
       var uploadInst = upload.render({
         elem: '#test1'
-        , url: '/uploadFile' //改成您自己的上传接口
+        , url: '/oss/file/upload' //改成您自己的上传接口
         , before: function (obj) {
           //预读本地文件示例，不支持ie8
           obj.preview(function (index, file, result) {
@@ -250,7 +250,7 @@
           }
           //上传成功
           layer.msg('上传成功');
-          $(".hpic").val(res.data.src);
+          $(".hpic").val(res.data);
         }
         , error: function () {
           //演示失败状态，并实现重传

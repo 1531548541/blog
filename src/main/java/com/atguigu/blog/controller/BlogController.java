@@ -1,6 +1,7 @@
 package com.atguigu.blog.controller;
 
 
+import com.atguigu.blog.constant.ConstantProperties;
 import com.atguigu.blog.entity.TBlog;
 import com.atguigu.blog.entity.TUser;
 import com.atguigu.blog.service.TBlogService;
@@ -61,7 +62,9 @@ public class BlogController {
 
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable Long id, Model model) throws NotFoundException {
-        model.addAttribute("blog", blogService.getAndConvert(id));
+        TBlog blog = blogService.getAndConvert(id);
+        blog.setFirstPicture(ConstantProperties.FILE_URL+blog.getFirstPicture());
+        model.addAttribute("blog", blog);
         return "blog";
     }
 

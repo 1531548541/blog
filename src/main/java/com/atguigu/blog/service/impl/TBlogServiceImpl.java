@@ -1,9 +1,11 @@
 package com.atguigu.blog.service.impl;
 
 import com.atguigu.blog.VO.BlogQuery;
+import com.atguigu.blog.constant.ConstantProperties;
 import com.atguigu.blog.entity.TBlog;
 import com.atguigu.blog.entity.TBlogTagMapping;
 import com.atguigu.blog.entity.TTag;
+import com.atguigu.blog.entity.TUser;
 import com.atguigu.blog.mapper.TBlogMapper;
 import com.atguigu.blog.mapper.TBlogTagMappingMapper;
 import com.atguigu.blog.mapper.TTypeMapper;
@@ -53,8 +55,11 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
 //        blogMapper.selectAll();
         List<TBlog> blogList = blogMapper.selectList(null);
         for (TBlog tBlog : blogList) {
+            tBlog.setFirstPicture(ConstantProperties.FILE_URL+tBlog.getFirstPicture());
             //查找user
-            tBlog.setUser(userMapper.selectById(tBlog.getUserId()));
+            TUser tUser = userMapper.selectById(tBlog.getUserId());
+            tUser.setAvatar(ConstantProperties.FILE_URL+tUser.getAvatar());
+            tBlog.setUser(tUser);
             //查找type
             tBlog.setType(typeMapper.selectById(tBlog.getTypeId()));
             //查找tagList
@@ -138,7 +143,7 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
         if(blogQuery.getTypeId()!=null){
             queryWrapper.eq("type_id",blogQuery.getTypeId());
         }
-        queryWrapper.eq("recommend",blogQuery.getRecommend()?1:0);
+//        queryWrapper.eq("recommend",blogQuery.getRecommend()?1:0);
         List<TBlog> blogList = blogMapper.selectList(queryWrapper);
         for (TBlog tBlog : blogList) {
             //查找type
@@ -159,7 +164,9 @@ public class TBlogServiceImpl extends ServiceImpl<TBlogMapper, TBlog> implements
             throw new NotFoundException("该博客不存在");
         }
         blog.setContent(MarkdownUtils.markdownToHtmlExtensions(blog.getContent()));
-        blog.setUser(userMapper.selectById(blog.getUserId()));
+        TUser tUser = userMapper.selectById(blog.getUserId());
+        tUser.setAvatar(ConstantProperties.FILE_URL+tUser.getAvatar());
+        blog.setUser(tUser);
         return blog;
     }
 
