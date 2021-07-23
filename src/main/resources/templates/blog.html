@@ -470,6 +470,7 @@ h5,h6{font-size:1em;}
                   </div>
                   <div class="actions">
                     <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-foreparentid=${comment.id},data-commentid=${comment.id},data-commentusername=${comment.username}" onclick="reply(this)">回复</a>
+                    <a th:if="${session.user!=null&&session.user.username==comment.username}" th:onclick="delComment([[${comment.id}]])">删除</a>
                   </div>
                 </div>
                 <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
@@ -491,6 +492,7 @@ h5,h6{font-size:1em;}
                       </div>
                       <div class="actions">
                         <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-foreparentid=${comment.id},data-commentid=${reply.id},data-commentusername=${reply.username}" onclick="reply(this)">回复</a>
+                        <a th:if="${session.user!=null&&session.user.username==reply.username}" th:onclick="delComment([[${reply.id}]])">删除</a>
                       </div>
                     </div>
                   </div>
@@ -558,7 +560,9 @@ h5,h6{font-size:1em;}
 
 
   <script th:inline="javascript">
-
+    layui.use('layer', function(){
+      var layer = layui.layer;
+    });
     $('.menu.toggle').click(function () {
       $('.m-item').toggleClass('m-mobile-hide');
     });
@@ -588,7 +592,6 @@ h5,h6{font-size:1em;}
       popup : $('.wechat-qr'),
       position: 'left center'
     });
-
     var serurl = /*[[#{blog.serurl}]]*/"127.0.0.1:8080";
     var url = /*[[@{/blog/{id}(id=${blog.id})}]]*/"";
     var qrcode = new QRCode("qrcode", {

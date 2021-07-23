@@ -50,7 +50,7 @@ public class CommentController {
             commentService.saveComment(comment);
             return "redirect:/comments/" + comment.getBlogId();
         } else {
-            return "login";
+            return "redirect:/login";
         }
     }
 
